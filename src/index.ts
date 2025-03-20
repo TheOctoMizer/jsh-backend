@@ -1,12 +1,45 @@
-import { fastify } from "fastify";
+import { fastify, FastifyReply, FastifyRequest } from "fastify";
+import getExtensionData from "./routes/getExtensionData";
+import { addIdentifier, getIdentifier } from "./routes/jobUrlIdentifier";
+import * as dotenv from "dotenv";
+import { AddJobIdentifierRequest, GetJobIdentifierRequest } from "./models";
 
-const server = fastify();
+dotenv.config();
+const PORT = process.env.PORT || 3000;
 
-server.get("/", async (request, reply) => {
-  return { hello: "world" };
+const server = fastify({
+  logger: true,
 });
 
-server.listen({ port: 3000 }, (err, address) => {
+server.get("/", async (request, response) => {
+  return { hello: "world", port: PORT };
+});
+
+server.get("/extension-data", async (request, response) => {
+  return getExtensionData(request, response);
+});
+
+server.post(
+  "/add-identifier",
+  async (
+    request: FastifyRequest<{ Body: AddJobIdentifierRequest }>,
+    response: FastifyReply
+  ) => {
+    return addIdentifier(request, response);
+  }
+);
+
+server.post(
+  "/get-identifiers",
+  async (
+    request: FastifyRequest<{ Body: GetJobIdentifierRequest }>,
+    response: FastifyReply
+  ) => {
+    return getIdentifier(request, response);
+  }
+);
+
+server.listen({ port: Number(PORT) }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
