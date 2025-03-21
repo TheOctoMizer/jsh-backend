@@ -16,5 +16,13 @@
   "devDependencies": {
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "@firebase/database": "^1.0.13",
+    "@types/node": "^22.13.10",
+    "axios": "^1.8.3",
+    "dotenv": "^16.4.7",
+    "firebase": "^11.4.0",
+    "genkit-cli": "1.2.0"
   }
 }
